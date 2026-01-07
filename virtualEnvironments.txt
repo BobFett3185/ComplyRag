@@ -1,0 +1,11 @@
+(env) PS C:\...\ComplyRag> pip list
+to see all the things you have installed in your virtual environment
+
+Start working: 
+activate your env : myenv\Scripts\activate
+Install what you need: pip install package-name
+Work on your project
+when you are done: deactivate
+
+
+clear terminal with control L 
