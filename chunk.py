@@ -66,3 +66,6 @@ print(chunky[7199])
 
 # so now we have all our chunks , next is to embed them using pinecone
 
+def getChunks(): # this will be called in VectorDB file to get the chunks for embedding
+    return chunky
+
