@@ -131,3 +131,6 @@ for i in range(0, len(processed_records), batch_size):
             else:
                 print(f"Error at index {i}: {e}")
                 break
+
+# everything is added to pincone
+
