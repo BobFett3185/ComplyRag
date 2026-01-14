@@ -15,4 +15,4 @@ The RAG mechanism works this way:
 - When a user has a query that query is also vectorized by pinecone, and the most relevant or similar records are returned
 - Then these records are passed as context to the the llm.
 
-This method was used to enhance traceability from the LLM. Oftentimes we get an answer from an LLM but don't know where they got it from. Retrieving records allows the LLM to easily cite the source it got it's information from, leading to higher traceability which compliance specialists can easily trust.
+This method was used to enhance traceability from the LLM. Oftentimes we get an answer from an LLM but don't know where they got it from. Retrieving records allows the LLM to easily cite the source it got it's information from, leading to higher traceability resulting in answers that compliance specialists can trust.
