@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Checklist - LEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1a2847 50%, #2d3e5f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            width: 900px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(251, 191, 36, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        .sidebar {
+            width: 180px;
+            background: rgba(255, 255, 255, 0.02);
+            border-right: 1px solid rgba(251, 191, 36, 0.15);
+            padding: 1rem 0.8rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #fbbf24;
+            font-weight: 700;
+            padding: 0.5rem 0.6rem;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+        
+        .category-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-height: 0;
+        }
+        
+        .category-item {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 2px solid rgba(245, 158, 11, 0.4);
+            padding: 0.5rem 0.6rem;
+            font-size: 0.75rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .category-item:hover {
+            background: rgba(245, 158, 11, 0.15);
+            border-left-color: rgba(251, 191, 36, 0.6);
+            transform: translateX(2px);
+        }
+        
+        .category-item.active {
+            background: rgba(245, 158, 11, 0.2);
+            border-left-color: #fbbf24;
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        
+        .content-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 2px solid rgba(251, 191, 36, 0.2);
+            padding: 1rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .header-title {
+            font-size: 2rem;
+            letter-spacing: 0.08em;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .checklist-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            min-height: 0;
+        }
+        
+        .checklist-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 0px;
+            padding: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .checklist-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+        
+        .checklist-item.completed {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(251, 191, 36, 0.4);
+            border-radius: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-item.completed .checkbox {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            border-color: #fbbf24;
+        }
+        
+        .checkbox-mark {
+            color: #0f172a;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .task-label {
+            font-size: 0.85rem;
+            color: #e5e7eb;
+            flex: 1;
+        }
+        
+        .checklist-item.completed .task-label {
+            color: #22c55e;
+            text-decoration: line-through;
+        }
+        
+        .priority-badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            font-weight: 700;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 2px solid rgba(251, 191, 36, 0.2);
+            padding: 0.8rem;
+            display: flex;
+            gap: 0.6rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .btn-home {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            border: 2px solid #fbbf24;
+            color: #0f172a;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            padding: 0.5rem 1.2rem;
+            border-radius: 0px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .btn-reset {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            padding: 0.5rem 1.2rem;
+            border-radius: 0px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.25);
+        }
+        
+        .add-task-area {
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 2px solid rgba(251, 191, 36, 0.2);
+            padding: 0.8rem;
+            display: flex;
+            gap: 0.6rem;
+            flex-shrink: 0;
+        }
+        
+        .task-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            color: #e5e7eb;
+            padding: 0.6rem 0.8rem;
+            border-radius: 0px;
+            font-size: 0.85rem;
+        }
+        
+        .task-input::placeholder {
+            color: rgba(213, 213, 213, 0.4);
+        }
+        
+        .task-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(251, 191, 36, 0.4);
+            outline: none;
+        }
+        
+        .btn-add-task {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            border: 2px solid #fbbf24;
+            color: #0f172a;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            padding: 0.6rem 1rem;
+            border-radius: 0px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn-add-task:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                width: 90vw;
+                height: 90vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Categories -->
+        <div class="sidebar">
+            <div class="sidebar-title">Categories</div>
+            <div class="category-list">
+                <div class="category-item active" onclick="filterChecklist('all')">All Tasks</div>
+                <div class="category-item" onclick="filterChecklist('aml')">AML/KYC</div>
+                <div class="category-item" onclick="filterChecklist('documentation')">Documentation</div>
+                <div class="category-item" onclick="filterChecklist('reporting')">Reporting</div>
+                <div class="category-item" onclick="filterChecklist('risk')">Risk Mgmt</div>
+                <div class="category-item" onclick="filterChecklist('audit')">Audit</div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content-box">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="header-title">Compliance Checklist</h1>
+            </div>
+            
+            <!-- Checklist Items -->
+            <div class="checklist-area" id="checklistArea">
+                <div class="checklist-item" onclick="toggleTask(this)">
+                    <div class="checkbox"><span class="checkbox-mark"></span></div>
+                    <div class="task-label">Verify customer identity documentation</div>
+                    <div class="priority-badge">High</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleTask(this)">
+                    <div class="checkbox"><span class="checkbox-mark"></span></div>
+                    <div class="task-label">Complete beneficial ownership verification</div>
+                    <div class="priority-badge">High</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleTask(this)">
+                    <div class="checkbox"><span class="checkbox-mark"></span></div>
+                    <div class="task-label">Submit quarterly AML reports</div>
+                    <div class="priority-badge">High</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleTask(this)">
+                    <div class="checkbox"><span class="checkbox-mark"></span></div>
+                    <div class="task-label">Review transaction monitoring alerts</div>
+                    <div class="priority-badge">Med</div>
+                </div>
+                
+                <div class="checklist-item" onclick="toggleTask(this)">
+                    <div class="checkbox"><span class="checkbox-mark"></span></div>
+                    <div class="task-label">Update risk assessment documentation</div>
+                    <div class="priority-badge">Med</div>
+                </div>
+            </div>
+            
+            <!-- Add Task Area -->
+            <div class="add-task-area">
+                <input 
+                    type="text" 
+                    id="newTaskInput" 
+                    class="task-input" 
+                    placeholder="Add a new compliance task..." 
+                    onkeypress="handleKeyPress(event)"
+                />
+                <button class="btn-add-task" onclick="addTask()">ADD</button>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <button class="btn-home" onclick="window.location.href='index.html'">← Back Home</button>
+                <button class="btn-reset" onclick="resetChecklist()">Reset All</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const allTasks = [
+            { id: 1, category: 'all', label: 'Verify customer identity documentation', priority: 'High', completed: false },
+            { id: 2, category: 'aml', label: 'Complete beneficial ownership verification', priority: 'High', completed: false },
+            { id: 3, category: 'aml', label: 'Submit quarterly AML reports', priority: 'High', completed: false },
+            { id: 4, category: 'aml', label: 'Review transaction monitoring alerts', priority: 'Med', completed: false },
+            { id: 5, category: 'documentation', label: 'Update risk assessment documentation', priority: 'Med', completed: false },
+            { id: 6, category: 'documentation', label: 'Archive compliance records', priority: 'Low', completed: false },
+            { id: 7, category: 'reporting', label: 'File suspicious activity reports (SARs)', priority: 'High', completed: false },
+            { id: 8, category: 'risk', label: 'Conduct risk assessment review', priority: 'Med', completed: false },
+            { id: 9, category: 'audit', label: 'Schedule annual internal audit', priority: 'Med', completed: false }
+        ];
+        
+        let nextId = 10;
+        let currentFilter = 'all';
+        
+        // Load completion state from localStorage on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChecklistState();
+            filterChecklistDirect('all');
+        });
+        
+        function saveChecklistState() {
+            const state = allTasks.reduce((acc, task) => {
+                acc[task.id] = task.completed;
+                return acc;
+            }, {});
+            localStorage.setItem('checklistState', JSON.stringify(state));
+        }
+        
+        function loadChecklistState() {
+            const state = JSON.parse(localStorage.getItem('checklistState') || '{}');
+            allTasks.forEach(task => {
+                if (state[task.id] !== undefined) {
+                    task.completed = state[task.id];
+                }
+            });
+        }
+        
+        function toggleTask(element) {
+            element.classList.toggle('completed');
+            const checkbox = element.querySelector('.checkbox-mark');
+            checkbox.textContent = element.classList.contains('completed') ? '✓' : '';
+            
+            // Find the corresponding task and update its completed state
+            const taskLabel = element.querySelector('.task-label').textContent;
+            const task = allTasks.find(t => t.label === taskLabel);
+            if (task) {
+                task.completed = element.classList.contains('completed');
+                saveChecklistState();
+            }
+        }
+        
+        function resetChecklist() {
+            if (confirm('Reset all checked tasks?')) {
+                allTasks.forEach(task => {
+                    task.completed = false;
+                });
+                saveChecklistState();
+                filterChecklistDirect(currentFilter);
+            }
+        }
+        
+        function addTask() {
+            const input = document.getElementById('newTaskInput');
+            const taskLabel = input.value.trim();
+            
+            if (!taskLabel) return;
+            
+            const newTask = {
+                id: nextId++,
+                category: currentFilter === 'all' ? 'all' : currentFilter,
+                label: taskLabel,
+                priority: 'Med',
+                completed: false
+            };
+            
+            allTasks.push(newTask);
+            input.value = '';
+            input.focus();
+            
+            saveChecklistState();
+            
+            // Refresh the current view with new task
+            if (currentFilter === 'all') {
+                filterChecklistDirect('all');
+            } else {
+                filterChecklistDirect(currentFilter);
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        }
+        
+        function filterChecklist(category) {
+            currentFilter = category;
+            const items = document.querySelectorAll('.category-item');
+            items.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            filterChecklistDirect(category);
+        }
+        
+        function filterChecklistDirect(category) {
+            const checklistArea = document.getElementById('checklistArea');
+            const filtered = category === 'all' ? allTasks : allTasks.filter(t => t.category === category);
+            
+            if (filtered.length === 0) {
+                checklistArea.innerHTML = '<div style="color: #999; text-align: center; margin-top: 2rem;">No tasks in this category</div>';
+                return;
+            }
+            
+            checklistArea.innerHTML = filtered.map(task => {
+                const completedClass = task.completed ? 'completed' : '';
+                const checkmark = task.completed ? '✓' : '';
+                return `
+                    <div class="checklist-item ${completedClass}" onclick="toggleTask(this)">
+                        <div class="checkbox"><span class="checkbox-mark">${checkmark}</span></div>
+                        <div class="task-label">${task.label}</div>
+                        <div class="priority-badge">${task.priority}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
