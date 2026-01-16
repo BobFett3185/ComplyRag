@@ -1,0 +1,18 @@
+
+how to run
+
+In 1 terminal:
+
+cd fastapi_server
+fastapi dev main.py
+
+
+In another:
+
+
+cd fastapi_server
+python -m http.server 8080
+
+
+browser 
+Homepage: http://127.0.0.1:8080/index.html
