@@ -374,7 +374,8 @@
     </div>
     
     <script>
-        const API_URL = 'http://127.0.0.1:8000/chat';
+        const API_URL = 'http://127.0.0.1:8000/chat'; // match this endpint with the one in main.py
+        // this is the url to the fastapi hehehe
         
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
@@ -411,6 +412,7 @@
                 if (!response.ok) throw new Error('API Error');
                 
                 const data = await response.json();
+                console.log("Full API Response:", data);
                 
                 // Remove loading message
                 const loadingEl = document.getElementById(loadingId);

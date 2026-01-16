@@ -1,7 +1,6 @@
 from distro import name
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 
 
 
@@ -189,7 +188,7 @@ The request body for a post request is usally long and contains lots of informat
 
 
 
-#from chatbot import getResponse # this is the function we created in chatbot.py to get the response from the chatbot
+from chatbot import getResponse # this is the function we created in chatbot.py to get the response from the chatbot
 
 class Query (BaseModel):
     message: str
@@ -197,14 +196,8 @@ class Query (BaseModel):
 # endpoint for chat feature
 @app.post("/chat")
 async def chat(query: Query): # whatever query is passed has to follow the query class
-    # Uncomment this when ready to use actual chatbot
-    #response_stream = getResponse(query.message)
-    #response_text = ""
-    #for chunk in response_stream:
-    #    response_text += chunk.text
-    #response = response_text
-    
-    response = f"Bot received: {query.message}"
+    response = getResponse(query.message)
+    #response = f"Bot received: {query.message}"
 
     return {"response": response}
 
