@@ -39,6 +39,10 @@ system_instruction = \
 "" \
 "If a user asks a follow up question that is related to the same topic, you can use the previous conversation context to answer the question " \
 "even if the context from the vector database doesnt specifically answer the follow up question. " \
+"additionally you have memory and can see an array of past chats. If a user asks a non specific question that seems like a follow up, " \
+"you can assume they are still talking about the last question and then you can keep in mind what the conversation is about from the memory array" \
+"each memory array has a dictionary with the past question and response"
+
 
 
 
@@ -91,19 +95,23 @@ if __name__ == "__main__": #prevent side effects when importing this file into t
         ) # i think these are the only 2 aruments you can pass in
 
 
-
-
         # stream the results
         for chunk in response:
             print(chunk.text, end="")
 
 
+
+memory = []
+
 # create a function to call from the other file to get a response from the chatbot for a given query.
 def getResponse(query): # this function will take in a query and return a response from the chatbot
+
+    global memory 
+
     context = getContext(query) # get the relevant context from pinecone for the query
 
     context_prompt = f"Here is some relevant context from the raw text of the regulations that might help you answer the question:{context} \n\n"
-    prompt = f"Here are your system instructions on how to answer the question: {system_instruction}\n\n Here is the question: {query}\n\nNow try your best to answer it, with respect to this context pulled from the database of regulations{context_prompt}:"
+    prompt = f"Here are your system instructions on how to answer the question: {system_instruction}\n\n Here is the question: {query}\n\nNow try your best to answer it, with respect to this context pulled from the database of regulations{context_prompt}: Keep in mind that you have a memory and can see the past chats in their order in this: {memory}"
     responseStream = client.models.generate_content_stream(
         model="gemini-3-flash-preview",
         contents=prompt,
@@ -112,5 +120,15 @@ def getResponse(query): # this function will take in a query and return a respon
     response = ""
     for chunk in responseStream:
         response += chunk.text
+
+#copied_portion = original_array[start_index:end_index].copy()
+
+    if len(memory) > 10:
+        memory = memory[-10:]
+
+    chat = {"query": query, "response": response}
+    memory.append(chat)
+
+    
 
     return response
