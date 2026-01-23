@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    # OR ADD THIS:
+    env_file:
+      - .env
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./fastapi_server:/usr/share/nginx/html
