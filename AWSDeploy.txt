@@ -1,0 +1,34 @@
+The app is now deployed in AWS 
+
+The docker images are pushed to the ECR 
+using these commands from the terminal : https://us-east-1.console.aws.amazon.com/ecr/private-registry/repositories?region=us-east-1
+
+Then cd back to root folder csproject
+ensure you have a running instance of ec2 with permission to read the registry 
+
+Then you can ssh into the ec2 instance using ssh -i "name.pem" ec2-user@"publicIP"
+ensure the pem file you get when you make the ecs2 instance is in the root folder(the one you should've cd to)
+fill in the pem file name and get your publicIP address from the EC2 page 
+
+Now that you are in EC2 you need to install and update docker
+# Update the package manager
+sudo dnf update -y
+
+
+sudo dnf install -y docker
+
+# Start the Docker service
+sudo service docker start
+
+# (Optional) Make Docker start automatically if the server reboots
+sudo systemctl enable docker
+
+sudo usermod -a -G docker ec2-user # add to docker users 
+
+now use exit to leave the ec2 instance
+Then we can ssh back in and log in again 
+
+docker pull 
+docker run 
+
+

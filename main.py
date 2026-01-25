@@ -2,12 +2,15 @@ from distro import name
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+import os
+
 
 
 
 
 app = FastAPI()
 # to run the server cd into your fastapi folder then use the command fastapi dev main.py 
+
 
 # 1. Enable CORS (Critical for the frontend to talk to the backend)
 app.add_middleware(
@@ -204,3 +207,11 @@ async def chat(query: Query): # whatever query is passed has to follow the query
 
 
 
+from fastapi.staticfiles import StaticFiles
+
+# Get the absolute path to the 'fastapi_server' directory
+script_dir = os.path.dirname(__file__)
+frontend_path = os.path.join(script_dir, "fastapi_server")
+
+# Mount the directory
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
