@@ -23,3 +23,8 @@ The other functionality is an api to recieve news for the banking industry and p
 Another feature is the interactive checklist to help compliance specialists track every step of the way. 
 
 
+This app is also containerized in docker, then pulled by an AWS EC2 instance, which runs the image. 
+
+The app is fully deployed and can be accessed here: http://44.193.223.27/index.html
+
+Thanks!
