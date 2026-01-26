@@ -3,11 +3,11 @@
 
 This is an app to help compliance specialists in the banking industry. 
 
-The main funcitonality is a chatbot, which is powered by gemini API. This chatbot's accuracy and tracing are bolstered by a RAG mechanism. 
+The main funcitonality is a chatbot, which is powered by Google's Gemini API. This chatbot's accuracy and tracing are bolstered by a RAG mechanism. 
 
 The RAG mechanism works this way:
 
-- Used electronic Code of Federal Regulations to collect all of title 12 regulations which are all the banking regulations.
+- Used electronic Code of Federal Regulations to collect all of title 12 regulations (which are all the banking regulations).
 - Then this was parsed in XML format.
 - From there the regulations were chunked by regulation section into about 7.2k records
 - Using pinecone indexing and vector embeddings I upserted these records into a pinecone vector database
