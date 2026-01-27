@@ -11,24 +11,33 @@ ensure the pem file you get when you make the ecs2 instance is in the root folde
 fill in the pem file name and get your publicIP address from the EC2 page 
 
 Now that you are in EC2 you need to install and update docker
-# Update the package manager
+
 sudo dnf update -y
-
-
 sudo dnf install -y docker
-
-# Start the Docker service
 sudo service docker start
-
-# (Optional) Make Docker start automatically if the server reboots
 sudo systemctl enable docker
-
 sudo usermod -a -G docker ec2-user # add to docker users 
 
-now use exit to leave the ec2 instance
-Then we can ssh back in and log in again 
+exit ec2 instance
+ssh back in and log in again 
 
 docker pull 
 docker run 
 
+-------------------------------
+we set the app to autorun when the ec2 instance starts
 
+start the instance in ec2 dashboard
+you need to ssh into a new instance with different IP 
+We access the app at a different ip address. 
+
+
+
+"Smooth Operator" Workflow to add new image:
+Laptop: build -> tag -> push
+
+EC2: docker pull (Gets the new files)
+
+EC2: docker rm -f my-app (Kills the old version)
+
+EC2: docker run ... --restart always (Starts the new version)
